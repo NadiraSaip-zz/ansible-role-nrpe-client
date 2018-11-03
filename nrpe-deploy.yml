@@ -1,0 +1,31 @@
+---
+- hosts: nrpe-clients
+  remote_user: root
+  tasks:
+  - name: install epel
+    yum:
+      name: epel-release
+      state: latest
+
+  - name: install nrpe
+    yum:
+      name: nrpe
+      state: latest
+
+  - name: install nagios plugins
+    yum:
+      name: nagios-plugins-all
+      state: latest
+
+  - name: deploy nrpe.cfg
+    copy:
+      src: nrpe.cfg
+      dest: /etc/nrpe.d/nrpe.cfg
+    register: deploy_nrpe
+
+  - name: start/restart and enable nrpe
+    systemd:
+      name: nrpe
+      state: restarted
+      enabled: yes
+    when: deploy_nrpe.changed

@@ -1,0 +1,12 @@
+---
+- hosts: nrpe-clients
+
+  vars:
+    do_token: 269f46a1b347db7048a5100ccb2184ebc6085725650e140680fcdc6da5ee7e20
+  tasks:
+    
+  - name: ensure ssh key exists
+    user: >
+      name={{ ansible_user_id }}
+      generate_ssh_key=yes
+      ssh_key_file=.ssh/id_rsa
